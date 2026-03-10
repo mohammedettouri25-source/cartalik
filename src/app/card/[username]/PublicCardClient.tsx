@@ -17,8 +17,29 @@ import Link from "next/link";
 import { useLocale } from "@/context/LocaleContext";
 import LeadCaptureForm from "./LeadCaptureForm";
 
+interface UserProfile {
+  id: string;
+  name: string;
+  username: string;
+  photo_url: string;
+  email: string;
+  phone?: string;
+  whatsapp?: string;
+  title?: string;
+  company?: string;
+  bio?: string;
+  is_active: boolean;
+  card_type: string;
+  bg_color?: string;
+  font_color?: string;
+  cv_url?: string;
+  catalogue_url?: string;
+  location_url?: string;
+  google_reviews_url?: string;
+}
+
 interface PublicCardClientProps {
-  profile: any;
+  profile: UserProfile;
   links: any[];
   products?: any[];
 }

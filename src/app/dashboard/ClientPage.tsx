@@ -44,6 +44,41 @@ import StatCard from "@/components/StatCard";
 import { useLocale } from "@/context/LocaleContext";
 import ImageCropper from "@/components/dashboard/ImageCropper";
 
+interface UserProfile {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
+  phone?: string;
+  whatsapp?: string;
+  title?: string;
+  company?: string;
+  bio?: string;
+  photo_url: string;
+  cv_url?: string;
+  catalogue_url?: string;
+  is_active: boolean;
+  card_type: string;
+  subscription_status: string;
+  accent_color?: string;
+}
+
+interface AnalyticsEvent {
+  id: string;
+  event_type: string;
+  metadata: any;
+  created_at: string;
+}
+
+interface DashboardClientPageProps {
+  profile: UserProfile | null;
+  links: any[];
+  subscription?: any;
+  analytics: AnalyticsEvent[];
+  leads?: any[];
+  products?: any[];
+}
+
 /* ─── Section Wrapper ─── */
 function Section({
   id,
@@ -57,7 +92,7 @@ function Section({
   title: string;
   desc: string;
   children: React.ReactNode;
-  icon?: any;
+  icon?: React.ElementType;
   badge?: string;
 }) {
   return (
@@ -82,7 +117,7 @@ function Section({
 }
 
 /* ─── Profile Section ─── */
-function ProfileSection({ profile }: { profile: any }) {
+function ProfileSection({ profile }: { profile: UserProfile | null }) {
   const { t } = useLocale();
   const [isPending, setIsPending] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -129,7 +164,6 @@ function ProfileSection({ profile }: { profile: any }) {
     try {
       await uploadPhoto(formData);
     } catch (error: any) {
-      alert(error.message || t('userDashboard.failedPhoto'));
     } finally {
       setIsUploading(false);
       setSelectedImage(null);
@@ -1021,13 +1055,12 @@ function ProductsSection({ products, profile }: { products: any[], profile: any 
 export default function DashboardClientPage({ 
   profile, 
   links, 
-  subscription, 
   analytics,
   leads = [],
   products = [] 
-}: any) {
+}: Omit<DashboardClientPageProps, 'subscription'>) {
   const { t } = useLocale();
-  const totalTaps = analytics?.filter((e: any) => e.event_type === 'view' || e.event_type === 'tap').length || 0;
+  const totalTaps = analytics?.filter((e: AnalyticsEvent) => e.event_type === 'view' || e.event_type === 'tap').length || 0;
   const isCardActive = profile?.is_active;
   const isBusiness = profile?.card_type === 'business';
 

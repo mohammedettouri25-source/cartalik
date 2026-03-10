@@ -26,10 +26,29 @@ import { useLocale } from '@/context/LocaleContext';
 import { markOrderProcessed, deleteOrder, createAccountFromOrder, deactivateProfile, renewSubscriptionAdmin } from './actions';
 import StatCard from '../../components/StatCard';
 
+interface Order {
+  id: string;
+  status: string;
+  card_type: string;
+  full_name: string;
+  email: string;
+  phone?: string;
+  created_at: string;
+}
+
+interface Profile {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
+  is_active: boolean;
+  subscriptions?: any[];
+}
+
 interface DashboardContentProps {
-  orders: any[];
+  orders: Order[];
   totalUsers: number;
-  expiredProfiles?: any[];
+  expiredProfiles?: Profile[];
   acquisitionStats?: {
     growthPercent: number;
     chartData: number[];
@@ -101,7 +120,7 @@ export default function DashboardContent({
           </div>
 
           <div className="divide-y divide-red-50 px-6">
-            {expiredProfiles.map((profile: any) => {
+            {expiredProfiles.map((profile: Profile) => {
               const sub = profile.subscriptions?.[0];
               const endDate = sub?.current_period_end ? new Date(sub.current_period_end) : null;
               const daysExpired = endDate ? Math.ceil((Date.now() - endDate.getTime()) / (1000 * 60 * 60 * 24)) : 0;

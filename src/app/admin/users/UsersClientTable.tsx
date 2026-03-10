@@ -20,9 +20,20 @@ import ManualUserForm from '../ManualUserForm';
 import EditUserModal from './EditUserModal';
 import { useLocale } from '@/context/LocaleContext';
 
-export default function UsersClientTable({ profiles }: { profiles: any[] }) {
+interface UserProfile {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
+  photo_url: string;
+  is_active: boolean;
+  card_type: string;
+}
+
+export default function UsersClientTable({ initialProfiles }: { initialProfiles: UserProfile[] }) {
   const { t } = useLocale();
   const [searchTerm, setSearchTerm] = useState('');
+  const [profiles, setProfiles] = useState(initialProfiles);
   const [filter, setFilter] = useState('All Members');
   const [isAdding, setIsAdding] = useState(false);
   const [editingUser, setEditingUser] = useState<any>(null);
@@ -111,7 +122,7 @@ export default function UsersClientTable({ profiles }: { profiles: any[] }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {filteredProfiles.map((profile) => (
+              {filteredProfiles.map((profile: UserProfile) => (
                 <tr key={profile.id} className="hover:bg-slate-50/80 transition-all group/user">
                   <td className="px-10 py-6">
                     <div className="flex items-center gap-5">

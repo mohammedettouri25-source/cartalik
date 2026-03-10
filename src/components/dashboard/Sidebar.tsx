@@ -10,17 +10,20 @@ import {
   CreditCard as SubIcon,
   Sparkles,
   Menu,
-  X,
   LogOut,
-  ChevronRight,
   Shield,
-  CreditCard,
   Users,
 } from "lucide-react";
 import { logout } from "@/app/auth/actions";
 import { useLocale } from "@/context/LocaleContext";
 
-export default function DashboardSidebar({ profile, children }: { profile: any, children: React.ReactNode }) {
+interface UserProfile {
+  name: string;
+  username: string;
+  photo_url: string;
+}
+
+export default function DashboardSidebar({ profile, children }: { profile: UserProfile | null, children: React.ReactNode }) {
   const { t } = useLocale();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");

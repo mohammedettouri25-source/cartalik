@@ -371,7 +371,12 @@
     "link": "Link",
     "addProduct": "Add Product",
     "noProducts": "No products added yet.",
-    "priceOnRequest": "Price on request"
+    "priceOnRequest": "Price on request",
+    "uploadCV": "Upload CV",
+    "uploadCatalogue": "Upload Catalogue",
+    "pdfMetadata": "PDF format @ 5MB Max",
+    "cvManaged": "CV operational",
+    "catalogueManaged": "Catalogue operational"
   },
   "leadCapture": {
     "shareButton": "Share Your Contact",

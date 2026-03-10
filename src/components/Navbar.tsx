@@ -17,7 +17,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center group">
             <div className="w-32 h-32 transition-all group-hover:scale-105">
-              <img src="/images/logo.png" alt="Logo" className="w-full h-full object-contain mix-blend-multiply" />
+              <img src="/images/logo.png" alt="Cartalik Logo" className="w-full h-full object-contain mix-blend-multiply" />
             </div>
           </Link>
 
