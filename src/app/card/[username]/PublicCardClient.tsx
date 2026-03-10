@@ -1,19 +1,15 @@
 "use client";
 
-import {
   Phone,
   Mail,
   MessageCircle,
   Globe,
   MapPin,
   Star,
-  QrCode,
   Download,
   ExternalLink,
-  Share2,
   Smartphone,
   CheckCircle,
-  ShoppingBag,
   Package,
 } from "lucide-react";
 import Link from "next/link";

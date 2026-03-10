@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState, useEffect, useState } from 'react';
-import { UserPlus, ChevronDown, CheckCircle, AlertCircle, Loader2, Sparkles, ShieldCheck, Mail, Key, CreditCard, Activity } from 'lucide-react';
+import { UserPlus, ChevronDown, AlertCircle, Loader2, Sparkles, ShieldCheck, Mail, Key, CreditCard, Activity } from 'lucide-react';
 import { createManualUser } from './actions';
 import { useRouter } from 'next/navigation';
 import { useLocale } from '@/context/LocaleContext';

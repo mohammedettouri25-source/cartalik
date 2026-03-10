@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { CreditCard, LogOut, LayoutDashboard, Users, UserCircle, Shield, ChevronRight } from 'lucide-react';
+import { LogOut, LayoutDashboard, Users, UserCircle, Shield, ChevronRight } from 'lucide-react';
 import { logout } from '@/app/auth/actions';
 import { useLocale } from '@/context/LocaleContext';
 import LanguageSwitcher from '@/components/LanguageSwitcher';

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   CreditCard, 
@@ -19,13 +19,11 @@ import {
   ArrowUpRight,
   MoreVertical,
   AlertTriangle,
-  Shield,
   Ban,
   Zap,
 } from 'lucide-react';
 import { useLocale } from '@/context/LocaleContext';
 import { markOrderProcessed, deleteOrder, createAccountFromOrder, deactivateProfile, renewSubscriptionAdmin } from './actions';
-import ManualUserForm from './ManualUserForm';
 import StatCard from '../../components/StatCard';
 
 interface DashboardContentProps {
@@ -402,5 +400,3 @@ function AdminActionButtons({ profileId, isActive }: { profileId: string, isActi
     </div>
   );
 }
-
-

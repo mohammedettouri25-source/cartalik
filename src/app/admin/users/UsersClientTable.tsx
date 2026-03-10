@@ -4,20 +4,16 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { deleteUserAdmin, updateProfileAdmin, renewSubscriptionAdmin } from '../actions';
 import { 
-  Users, 
   Trash2, 
-  CheckCircle, 
   User, 
   Search, 
-  MoreVertical, 
   ExternalLink, 
   Shield, 
   Activity, 
   UserPlus, 
   Edit3,
   ChevronDown,
-  Zap,
-  Ban
+  Zap
 } from 'lucide-react';
 import Link from 'next/link';
 import ManualUserForm from '../ManualUserForm';
@@ -121,7 +117,7 @@ export default function UsersClientTable({ profiles }: { profiles: any[] }) {
                     <div className="flex items-center gap-5">
                       <div className="relative">
                         {profile.photo_url ? (
-                          <img src={profile.photo_url} className="w-16 h-16 rounded-[1.5rem] object-cover ring-4 ring-white shadow-xl group-hover/user:scale-105 transition-transform" />
+                          <img src={profile.photo_url} alt={profile.name || "User"} className="w-16 h-16 rounded-[1.5rem] object-cover ring-4 ring-white shadow-xl group-hover/user:scale-105 transition-transform" />
                         ) : (
                           <div className="w-16 h-16 rounded-[1.5rem] gradient-accent flex items-center justify-center text-white font-black text-xl shadow-lg group-hover/user:rotate-3 transition-transform">
                             {profile.name?.substring(0, 1) || profile.email?.substring(0, 1).toUpperCase()}
