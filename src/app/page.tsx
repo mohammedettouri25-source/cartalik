@@ -176,7 +176,7 @@ export default function Home() {
               { id: 'personal', name: t('orderPage.personal'), price: '149', popular: false, features: [t('pricingFeatures.nfcCard'), t('pricingFeatures.digitalProfile'), t('pricingFeatures.basicAnalytics'), t('pricingFeatures.standardSupport')] },
               { id: 'business', name: t('orderPage.business'), price: '199', popular: true, features: [t('pricingFeatures.premiumCard'), t('pricingFeatures.enhancedProfile'), t('pricingFeatures.productShowcase'), t('pricingFeatures.leadManagement'), t('pricingFeatures.customBranding')] },
             ].map((plan) => (
-              <div className={`relative p-8 rounded-[3rem] border-2 transition-all ${plan.popular ? "border-accent bg-white shadow-2xl shadow-accent/10 scale-105 z-10" : "border-border bg-neutral hover:border-accent/30"}`}>
+              <div key={plan.id} className={`relative p-8 rounded-[3rem] border-2 transition-all ${plan.popular ? "border-accent bg-white shadow-2xl shadow-accent/10 scale-105 z-10" : "border-border bg-neutral hover:border-accent/30"}`}>
                 {plan.popular && <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1.5 rounded-full gradient-accent text-white text-[10px] font-black uppercase tracking-widest">{t('pricingPage.mostPopular')}</div>}
                 <h3 className="text-xl font-bold text-primary">{plan.name}</h3>
                 <div className="mt-4 flex items-baseline gap-1">

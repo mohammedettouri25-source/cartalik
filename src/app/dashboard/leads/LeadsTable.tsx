@@ -101,7 +101,7 @@ export default function LeadsTable({ initialLeads }: { initialLeads: Lead[] }) {
                       <div>
                         <p className="text-sm font-bold text-slate-900">{lead.name}</p>
                         {lead.message && (
-                          <p className="text-xs text-slate-500 line-clamp-1 max-w-xs" title={lead.message}>"{lead.message}"</p>
+                          <p className="text-xs text-slate-500 line-clamp-1 max-w-xs" title={lead.message}>&quot;{lead.message}&quot;</p>
                         )}
                       </div>
                     </div>

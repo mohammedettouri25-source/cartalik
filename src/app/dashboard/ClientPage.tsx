@@ -845,7 +845,7 @@ function LeadsSection({ leads }: { leads: any[] }) {
                   </td>
                   <td className="py-4">
                     <div className="max-w-[200px] truncate text-xs text-slate-500 italic">
-                      "{lead.message || 'No message'}"
+                      &quot;{lead.message || 'No message'}&quot;
                     </div>
                   </td>
                   <td className="py-4 text-right">
