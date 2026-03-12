@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   Globe,
   Zap,
@@ -72,11 +73,13 @@ export default function Home() {
             <div className="flex justify-center lg:justify-end animate-float">
               <div className="relative group">
                 <div className="absolute inset-0 rounded-[3rem] bg-accent/30 blur-[100px] scale-90 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10">
-                  <img 
+                <div className="relative z-10 w-full max-w-[500px] aspect-[4/3]">
+                  <Image 
                     src="/images/hero_nfc.png" 
                     alt="Cartalik NFC Tap"
-                    className="w-full max-w-[500px] h-auto drop-shadow-[0_35px_35px_rgba(0,0,0,0.15)] rounded-[3rem]"
+                    fill
+                    priority
+                    className="object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.15)] rounded-[3rem]"
                   />
                   {/* Floating Overlay Card */}
                   <div className="absolute -bottom-6 -left-6 sm:-left-12 w-64 sm:w-72 bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-primary/10 border border-white/50 p-5 space-y-4 animate-float-delayed">
@@ -88,8 +91,13 @@ export default function Home() {
                           <p className="text-[10px] text-text-muted">{t('homePageExample.title')}</p>
                         </div>
                       </div>
-                      <div className="w-20 h-20 flex items-center justify-center">
-                        <img src="/images/logo.png" alt="Logo" className="w-full h-full object-contain mix-blend-multiply" />
+                      <div className="relative w-20 h-20 flex items-center justify-center">
+                        <Image 
+                          src="/images/logo.png" 
+                          alt="Logo" 
+                          fill
+                          className="object-contain mix-blend-multiply" 
+                        />
                       </div>
                     </div>
                     <button className="w-full py-2.5 rounded-xl gradient-accent text-white text-[10px] font-bold shadow-lg shadow-accent/20">{t('homePageExample.saveContact')}</button>
@@ -115,11 +123,12 @@ export default function Home() {
               { img: "/images/step_connect.png", title: t('howItWorks.step3Title'), desc: t('howItWorks.step3Desc') },
             ].map((step, i) => (
               <div key={i} className="relative p-8 rounded-[2.5rem] bg-neutral border border-border hover:border-accent/30 transition-all group text-center">
-                <div className="flex justify-center mb-6">
-                  <img 
+                <div className="flex justify-center mb-6 relative w-24 h-24 mx-auto">
+                  <Image 
                     src={step.img} 
                     alt={step.title}
-                    className="w-24 h-24 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md"
+                    fill
+                    className="object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md"
                   />
                 </div>
                 <h3 className="text-xl font-bold text-primary mb-3">{step.title}</h3>

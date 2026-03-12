@@ -5,8 +5,15 @@ import { X, Shield, Loader2, Save } from 'lucide-react';
 import { updateProfileAdmin } from '../actions';
 import { useLocale } from '@/context/LocaleContext';
 
+interface UserProfile {
+  id: string;
+  name: string;
+  username: string;
+  card_type: string;
+}
+
 interface EditUserModalProps {
-  user: any;
+  user: UserProfile;
   onClose: () => void;
 }
 
@@ -25,7 +32,7 @@ export default function EditUserModal({ user, onClose }: EditUserModalProps) {
       await updateProfileAdmin(user.id, updates);
       onClose();
     } catch (error: any) {
-      alert(error.message || t('editUserModal.failedToUpdate'));
+      alert(error?.message || t('editUserModal.failedToUpdate'));
     } finally {
       setIsPending(false);
     }

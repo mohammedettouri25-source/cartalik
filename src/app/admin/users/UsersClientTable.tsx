@@ -3,14 +3,15 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { deleteUserAdmin, updateProfileAdmin, renewSubscriptionAdmin } from '../actions';
-import { 
-  Trash2, 
-  User, 
-  Search, 
-  ExternalLink, 
-  Shield, 
-  Activity, 
-  UserPlus, 
+import Image from 'next/image';
+import {
+  Trash2,
+  User,
+  Search,
+  ExternalLink,
+  Shield,
+  Activity,
+  UserPlus,
   Edit3,
   ChevronDown,
   Zap
@@ -28,15 +29,16 @@ interface UserProfile {
   photo_url: string;
   is_active: boolean;
   card_type: string;
+  subscriptions?: { status: string }[];
 }
 
 export default function UsersClientTable({ initialProfiles }: { initialProfiles: UserProfile[] }) {
   const { t } = useLocale();
   const [searchTerm, setSearchTerm] = useState('');
-  const [profiles, setProfiles] = useState(initialProfiles);
+  const profiles = initialProfiles; // Removed setProfiles as it was unused
   const [filter, setFilter] = useState('All Members');
   const [isAdding, setIsAdding] = useState(false);
-  const [editingUser, setEditingUser] = useState<any>(null);
+  const [editingUser, setEditingUser] = useState<UserProfile | null>(null);
 
   const filters = [
     { id: 'All Members', label: t('registry.allMembers') },
@@ -47,10 +49,10 @@ export default function UsersClientTable({ initialProfiles }: { initialProfiles:
   ];
 
   const filteredProfiles = profiles.filter(p => {
-    const matchesSearch = 
-      p.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const matchesSearch =
+      p.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.email?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     if (filter === 'Active') return matchesSearch && p.is_active;
     if (filter === 'Disabled') return matchesSearch && !p.is_active;
     if (filter === 'Business') return matchesSearch && p.card_type === 'business';
@@ -64,23 +66,23 @@ export default function UsersClientTable({ initialProfiles }: { initialProfiles:
       <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
         <div className="relative group w-full lg:w-96">
           <Search className="absolute start-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-accent transition-colors" />
-          <input 
-            type="text" 
-            placeholder={t('registry.search')} 
+          <input
+            type="text"
+            placeholder={t('registry.search')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full ps-11 pe-4 py-4 rounded-3xl bg-white border border-slate-200 outline-none focus:ring-4 focus:ring-accent/5 focus:border-accent transition-all text-sm font-bold shadow-sm placeholder:text-slate-300" 
+            className="w-full ps-11 pe-4 py-4 rounded-3xl bg-white border border-slate-200 outline-none focus:ring-4 focus:ring-accent/5 focus:border-accent transition-all text-sm font-bold shadow-sm placeholder:text-slate-300"
           />
         </div>
-        
+
         <div className="flex items-center gap-3 w-full lg:w-auto overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
           {filters.map((f) => (
-            <button 
-              key={f.id} 
+            <button
+              key={f.id}
               onClick={() => setFilter(f.id)}
               className={`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${
-                filter === f.id 
-                  ? 'bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-200' 
+                filter === f.id
+                  ? 'bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-200'
                   : 'bg-white border-slate-100 text-slate-400 hover:border-slate-300 hover:text-slate-600'
               }`}
             >
@@ -88,11 +90,11 @@ export default function UsersClientTable({ initialProfiles }: { initialProfiles:
             </button>
           ))}
           <div className="w-px h-8 bg-slate-200 mx-2 hidden lg:block" />
-          <button 
+          <button
              onClick={() => setIsAdding(!isAdding)}
              className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
-               isAdding 
-                 ? 'bg-red-50 text-red-600 border border-red-100' 
+               isAdding
+                 ? 'bg-red-50 text-red-600 border border-red-100'
                  : 'bg-accent text-white shadow-lg shadow-accent/20 hover:scale-[1.02] active:scale-95'
              }`}
           >
@@ -128,7 +130,14 @@ export default function UsersClientTable({ initialProfiles }: { initialProfiles:
                     <div className="flex items-center gap-5">
                       <div className="relative">
                         {profile.photo_url ? (
-                          <img src={profile.photo_url} alt={profile.name || "User"} className="w-16 h-16 rounded-[1.5rem] object-cover ring-4 ring-white shadow-xl group-hover/user:scale-105 transition-transform" />
+                          <div className="relative w-16 h-16 rounded-[1.5rem] overflow-hidden ring-4 ring-white shadow-xl group-hover/user:scale-105 transition-transform">
+                            <Image
+                              src={profile.photo_url}
+                              alt={profile.name || "User"}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
                         ) : (
                           <div className="w-16 h-16 rounded-[1.5rem] gradient-accent flex items-center justify-center text-white font-black text-xl shadow-lg group-hover/user:rotate-3 transition-transform">
                             {profile.name?.substring(0, 1) || profile.email?.substring(0, 1).toUpperCase()}
@@ -214,7 +223,7 @@ export default function UsersClientTable({ initialProfiles }: { initialProfiles:
   );
 }
 
-function StatusToggleButton({ profile }: { profile: any }) {
+function StatusToggleButton({ profile }: { profile: UserProfile }) {
   const { t } = useLocale();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -230,7 +239,7 @@ function StatusToggleButton({ profile }: { profile: any }) {
         router.refresh();
       } catch (error: any) {
         console.error('Failed to toggle status:', error);
-        alert('Error: ' + error.message);
+        alert('Error: ' + (error?.message || 'Unknown error'));
       }
     });
   };
@@ -247,7 +256,7 @@ function StatusToggleButton({ profile }: { profile: any }) {
         }
       } catch (error: any) {
         console.error('Failed to renew:', error);
-        alert('Error: ' + error.message);
+        alert('Error: ' + (error?.message || 'Unknown error'));
       }
     });
   };

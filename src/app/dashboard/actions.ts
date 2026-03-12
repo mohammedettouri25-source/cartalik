@@ -11,7 +11,7 @@ export async function updateProfile(formData: FormData) {
     throw new Error("You must be logged in to update your profile");
   }
 
-  const updates: Record<string, any> = {
+  const updates: Record<string, string | null> = {
     name: formData.get("name") as string,
     title: formData.get("title") as string,
     company: formData.get("company") as string,
@@ -68,7 +68,7 @@ export async function uploadPhoto(formData: FormData) {
   const filePath = `${user.id}/${fileName}`;
 
   // Upload to Supabase Storage
-  const { error: uploadError, data } = await supabase.storage
+  const { error: uploadError } = await supabase.storage
     .from("profiles")
     .upload(filePath, file, {
       upsert: true,
@@ -292,13 +292,43 @@ export async function addProduct(formData: FormData) {
 
   if (!user) throw new Error("Unauthorized");
 
+  let imageUrl = formData.get("image_url") as string || null;
+  const file = formData.get("image") as File;
+
+  if (file && file.size > 0) {
+    if (!file.type.startsWith("image/")) {
+      throw new Error("File must be an image");
+    }
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${user.id}-product-${Math.random()}.${fileExt}`;
+    const filePath = `${user.id}/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("profiles")
+      .upload(filePath, file, {
+        upsert: true,
+        contentType: file.type,
+      });
+
+    if (uploadError) {
+      console.error("Storage upload error", uploadError);
+      throw new Error(`Storage error: ${uploadError.message}`);
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from("profiles")
+      .getPublicUrl(filePath);
+
+    imageUrl = publicUrl;
+  }
+
   const newProduct = {
     profile_id: user.id,
     name: formData.get("name") as string,
     description: formData.get("description") as string,
     price: formData.get("price") as string,
     external_link: formData.get("external_link") as string,
-    image_url: formData.get("image_url") as string,
+    image_url: imageUrl,
   };
 
   const { error } = await supabase.from("products").insert(newProduct);

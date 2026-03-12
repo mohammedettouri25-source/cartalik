@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import {
   Phone,
   Mail,
@@ -42,6 +44,7 @@ interface PublicCardClientProps {
   profile: UserProfile;
   links: any[];
   products?: any[];
+  leads?: any[];
 }
 
 export default function PublicCardClient({ profile, links, products = [] }: PublicCardClientProps) {
@@ -109,7 +112,14 @@ END:VCARD`;
                 <div className="absolute inset-0 rounded-full bg-emerald-400/20 blur-2xl scale-125 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative z-10 p-1 rounded-full bg-gradient-to-tr from-emerald-400/40 via-white/20 to-transparent">
                     {profile.photo_url ? (
-                      <img src={profile.photo_url} alt={profile.name || "Profile"} className="w-36 h-36 rounded-full object-cover border-4 border-black/40" />
+                      <div className="relative w-36 h-36 rounded-full overflow-hidden border-4 border-black/40">
+                        <Image 
+                          src={profile.photo_url} 
+                          alt={profile.name || "Profile"} 
+                          fill 
+                          className="object-cover" 
+                        />
+                      </div>
                     ) : (
                       <div className="w-36 h-36 rounded-full bg-white/10 flex items-center justify-center text-5xl font-light tracking-tighter" style={{ color: fontColor }}>
                         {initials}
@@ -258,9 +268,14 @@ END:VCARD`;
                 <div className="grid grid-cols-1 gap-5">
                   {products.map((product) => (
                     <div key={product.id} className="p-6 rounded-[3rem] bg-white/[0.02] border border-white/5 flex gap-6 hover:bg-white/[0.05] transition-all duration-700 group/prod">
-                       <div className="w-24 h-24 rounded-[2rem] bg-white/5 flex items-center justify-center border border-white/5 overflow-hidden group-hover/prod:scale-[1.02] transition-transform duration-700">
+                       <div className="relative w-24 h-24 rounded-[2rem] bg-white/5 flex items-center justify-center border border-white/5 overflow-hidden group-hover/prod:scale-[1.02] transition-transform duration-700">
                          {product.image_url ? (
-                           <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+                           <Image 
+                             src={product.image_url} 
+                             alt={product.name} 
+                             fill
+                             className="object-cover" 
+                           />
                          ) : (
                            <Package className="w-10 h-10 text-slate-600 opacity-20" />
                          )}

@@ -4,6 +4,23 @@ import { Activity } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import DashboardContent from './DashboardContent';
 
+interface Subscription {
+  id: string;
+  status: string;
+  current_period_end: string | null;
+  profile_id: string;
+}
+
+interface Profile {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
+  is_active: boolean;
+  created_at: string;
+  subscriptions?: Subscription[];
+}
+
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
@@ -83,7 +100,7 @@ export default async function AdminDashboard() {
   const totalUsers = allProfiles?.length || 0;
 
   // Filter to only profiles that need attention (expired or missing subscription)
-  const expired = profilesWithSubs.filter((p: any) => {
+  const expired = profilesWithSubs.filter((p: Profile) => {
     const sub = p.subscriptions?.[0];
     
     // 1. If profile is inactive, it always needs attention

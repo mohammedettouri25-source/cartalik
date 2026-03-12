@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useState, useEffect } from "react";
 import {
   User,
@@ -61,6 +63,8 @@ interface UserProfile {
   card_type: string;
   subscription_status: string;
   accent_color?: string;
+  font_color?: string;
+  bg_color?: string;
 }
 
 interface AnalyticsEvent {
@@ -70,13 +74,39 @@ interface AnalyticsEvent {
   created_at: string;
 }
 
+interface LinkItem {
+  id: string;
+  platform: string;
+  url: string;
+  order_index: number;
+}
+
+interface Lead {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  message?: string;
+  created_at: string;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  description?: string;
+  price?: number;
+  image_url?: string;
+  url?: string;
+}
+
 interface DashboardClientPageProps {
   profile: UserProfile | null;
-  links: any[];
+  links: LinkItem[];
   subscription?: any;
   analytics: AnalyticsEvent[];
-  leads?: any[];
-  products?: any[];
+  leads?: Lead[];
+  products?: Product[];
 }
 
 /* ─── Section Wrapper ─── */
@@ -216,7 +246,12 @@ function ProfileSection({ profile }: { profile: UserProfile | null }) {
           <div className="relative group">
             <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-slate-200 shadow-lg group-hover:border-accent transition-all relative">
               {profile?.photo_url ? (
-                <img src={profile.photo_url} alt={profile.name || "Profile"} className="w-full h-full object-cover" />
+                <Image 
+                  src={profile.photo_url} 
+                  alt={profile.name || "Profile"} 
+                  fill 
+                  className="object-cover" 
+                />
               ) : (
                 <div className="w-full h-full gradient-accent flex items-center justify-center text-white text-2xl font-bold">
                   {initials}
@@ -351,7 +386,7 @@ function ProfileSection({ profile }: { profile: UserProfile | null }) {
 }
 
 /* ─── Links Section ─── */
-function LinksSection({ links }: { links: any[] }) {
+function LinksSection({ links }: { links: LinkItem[] }) {
   const { t } = useLocale();
   const [isAdding, setIsAdding] = useState(false);
   const [orderedLinks, setOrderedLinks] = useState(links || []);
@@ -476,7 +511,7 @@ function LinksSection({ links }: { links: any[] }) {
 }
 
 /* ─── Analytics Section ─── */
-function AnalyticsSection({ events }: { events: any[] }) {
+function AnalyticsSection({ events }: { events: AnalyticsEvent[] }) {
   const { t } = useLocale();
   const totalTaps = events?.filter(e => e.event_type === 'view' || e.event_type === 'tap').length || 0;
   const profileViews = events?.filter(e => e.event_type === 'view').length || 0;
@@ -548,7 +583,7 @@ function AnalyticsSection({ events }: { events: any[] }) {
 
 
 /* ─── QR Code Section ─── */
-function QRSection({ profile }: { profile: any }) {
+function QRSection({ profile }: { profile: UserProfile }) {
   const { t } = useLocale();
   const [url, setUrl] = useState("");
 
@@ -583,7 +618,7 @@ function QRSection({ profile }: { profile: any }) {
 
 
 /* ─── AI Tools Section ─── */
-function AIToolsSection({ profile }: { profile: any }) {
+function AIToolsSection({ profile }: { profile: UserProfile }) {
   const { t } = useLocale();
   const [bio, setBio] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -655,7 +690,7 @@ function AIToolsSection({ profile }: { profile: any }) {
 }
 
 /* ─── Color Style Section ─── */
-function ColorStyleSection({ profile }: { profile: any }) {
+function ColorStyleSection({ profile }: { profile: UserProfile }) {
   const { t } = useLocale();
   const [isPending, setIsPending] = useState(false);
   const [fontColor, setFontColor] = useState(profile?.font_color || '#1e293b');
@@ -804,7 +839,7 @@ function ColorStyleSection({ profile }: { profile: any }) {
 }
 
 /* ─── Leads Section (Business Only) ─── */
-function LeadsSection({ leads }: { leads: any[] }) {
+function LeadsSection({ leads }: { leads: Lead[] }) {
   const { t } = useLocale();
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
@@ -890,7 +925,7 @@ function LeadsSection({ leads }: { leads: any[] }) {
 }
 
 /* ─── Products Section (Business Only) ─── */
-function ProductsSection({ products, profile }: { products: any[], profile: any }) {
+function ProductsSection({ products, profile }: { products: Product[], profile: UserProfile }) {
   const { t } = useLocale();
   const [isPending, setIsPending] = useState(false);
   const [isCatUploading, setIsCatUploading] = useState(false);
@@ -978,6 +1013,10 @@ function ProductsSection({ products, profile }: { products: any[], profile: any 
               <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">{t('userDashboard.bio') || 'Description'}</label>
               <textarea name="description" rows={3} className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-accent/20" placeholder="..." />
             </div>
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">{t('userDashboard.productImage') || 'Product Image'}</label>
+              <input type="file" name="image" accept="image/*" className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-accent/10 file:text-accent hover:file:bg-accent/20 focus:outline-none focus:ring-2 focus:ring-accent/20" />
+            </div>
             <button
               type="submit"
               disabled={isPending}
@@ -1060,9 +1099,10 @@ export default function DashboardClientPage({
   products = [] 
 }: Omit<DashboardClientPageProps, 'subscription'>) {
   const { t } = useLocale();
+  if (!profile) return null;
   const totalTaps = analytics?.filter((e: AnalyticsEvent) => e.event_type === 'view' || e.event_type === 'tap').length || 0;
-  const isCardActive = profile?.is_active;
-  const isBusiness = profile?.card_type === 'business';
+  const isCardActive = profile.is_active;
+  const isBusiness = profile.card_type === 'business';
 
   return (
     <div className="max-w-7xl mx-auto space-y-10 pb-20">

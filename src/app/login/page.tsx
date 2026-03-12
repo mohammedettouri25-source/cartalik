@@ -2,7 +2,8 @@
 
 import { useState, Suspense } from "react";
 import Link from "next/link";
-import { CreditCard, Eye, EyeOff, ArrowRight } from "lucide-react";
+import Image from "next/image"; // Added Image import
+import { Eye, EyeOff, ArrowRight } from "lucide-react"; // Kept necessary lucide-react imports
 import { login } from "@/app/auth/actions";
 import { useSearchParams } from "next/navigation";
 import { useLocale } from "@/context/LocaleContext";
@@ -19,8 +20,13 @@ function LoginContent() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center shadow-lg shadow-accent/25 p-1">
-              <img src="/images/logo.png" alt="Cartalik Logo" className="w-full h-full object-contain filter brightness-0 invert" />
+            <div className="relative w-16 h-16 rounded-3xl gradient-accent flex items-center justify-center shadow-xl shadow-accent/20 group-hover:scale-110 transition-transform duration-500 group-hover:rotate-6">
+              <Image
+                src="/images/logo.png"
+                alt="Cartalik Logo"
+                fill
+                className="object-contain filter brightness-0 invert p-2"
+              />
             </div>
             <span className="text-2xl font-bold text-primary tracking-tight">
               Cartalik

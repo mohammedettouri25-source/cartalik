@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useLocale } from "@/context/LocaleContext";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -16,8 +17,13 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center group">
-            <div className="w-32 h-32 transition-all group-hover:scale-105">
-              <img src="/images/logo.png" alt="Cartalik Logo" className="w-full h-full object-contain mix-blend-multiply" />
+            <div className="relative w-10 h-10 rounded-xl gradient-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-110 transition-transform duration-500 group-hover:rotate-6">
+              <Image 
+                src="/images/logo.png" 
+                alt="Cartalik Logo" 
+                fill
+                className="object-contain filter brightness-0 invert p-1.5" 
+              />
             </div>
           </Link>
 

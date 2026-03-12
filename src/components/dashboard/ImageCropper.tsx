@@ -29,9 +29,9 @@ export default function ImageCropper({ image, onCropComplete, onCancel, t }: Ima
     setZoom(zoom);
   };
 
-  const onCropCompleteInternal = useCallback((_croppedArea: any, croppedAreaPixels: any) => {
+  const onCropCompleteInternal = (_croppedArea: any, croppedAreaPixels: { x: number, y: number, width: number, height: number }) => {
     setCroppedAreaPixels(croppedAreaPixels);
-  }, []);
+  };
 
   const createImage = (url: string): Promise<HTMLImageElement> =>
     new Promise((resolve, reject) => {

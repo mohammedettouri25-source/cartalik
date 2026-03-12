@@ -36,13 +36,19 @@ interface Order {
   created_at: string;
 }
 
+interface Subscription {
+  id: string;
+  status: string;
+  current_period_end: string | null;
+}
+
 interface Profile {
   id: string;
   name: string;
   username: string;
   email: string;
   is_active: boolean;
-  subscriptions?: any[];
+  subscriptions?: Subscription[];
 }
 
 interface DashboardContentProps {
@@ -121,7 +127,7 @@ export default function DashboardContent({
 
           <div className="divide-y divide-red-50 px-6">
             {expiredProfiles.map((profile: Profile) => {
-              const sub = profile.subscriptions?.[0];
+    const sub = profile.subscriptions?.[0];
               const endDate = sub?.current_period_end ? new Date(sub.current_period_end) : null;
               const daysExpired = endDate ? Math.ceil((Date.now() - endDate.getTime()) / (1000 * 60 * 60 * 24)) : 0;
 
@@ -390,7 +396,7 @@ function AdminActionButtons({ profileId, isActive }: { profileId: string, isActi
         }
       } catch (error: any) {
         console.error('Failed to renew profile:', error);
-        alert('Failed to renew profile: ' + error.message);
+        alert('Failed to renew profile: ' + (error?.message || 'Unknown error'));
       }
     });
   };

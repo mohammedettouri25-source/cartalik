@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LogOut, LayoutDashboard, Users, UserCircle, Shield, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
+import { LogOut, LayoutDashboard, Users, UserCircle, Shield, ChevronRight, LucideIcon } from 'lucide-react';
 import { logout } from '@/app/auth/actions';
 import { useLocale } from '@/context/LocaleContext';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 interface NavItemProps {
   href: string;
-  icon: any;
+  icon: LucideIcon;
   label: string;
   activeColor: string;
 }
@@ -47,8 +48,13 @@ export default function Sidebar({ userEmail }: { userEmail?: string }) {
     <aside className="w-full md:w-80 bg-white border-e border-slate-100 flex flex-col sticky top-0 md:h-screen overflow-y-auto z-30 transition-all duration-500">
       <div className="p-10 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-4 group">
-          <div className="w-12 h-12 rounded-2xl gradient-accent flex items-center justify-center shadow-xl shadow-accent/20 group-hover:scale-110 transition-transform duration-500 group-hover:rotate-6 p-1.5">
-            <img src="/images/logo.png" alt="Cartalik Logo" className="w-full h-full object-contain filter brightness-0 invert" />
+          <div className="w-12 h-12 rounded-2xl gradient-accent flex items-center justify-center shadow-xl shadow-accent/20 group-hover:scale-110 transition-transform duration-500 group-hover:rotate-6 relative">
+            <Image 
+              src="/images/logo.png" 
+              alt="Cartalik Logo" 
+              fill
+              className="object-contain filter brightness-0 invert p-1.5" 
+            />
           </div>
           <div>
             <span className="font-black text-slate-900 tracking-tighter text-2xl block leading-none">CARTALIK</span>

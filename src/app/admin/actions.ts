@@ -122,7 +122,7 @@ export async function deleteUserAdmin(userId: string) {
   revalidatePath('/admin/users');
 }
 
-export async function updateProfileAdmin(userId: string, updates: any) {
+export async function updateProfileAdmin(userId: string, updates: Partial<any>) {
   const supabase = await createClient();
   
   // Verify authenticated user
@@ -151,7 +151,7 @@ export async function updateProfileAdmin(userId: string, updates: any) {
   revalidatePath('/dashboard', 'layout');
 }
 
-export async function createManualUser(prevState: any, formData: FormData) {
+export async function createManualUser(prevState: { success: boolean, error?: string } | null, formData: FormData) {
   try {
     const supabase = await createClient();
     
@@ -232,7 +232,7 @@ export async function createManualUser(prevState: any, formData: FormData) {
     revalidatePath('/admin/users');
     
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Unexpected error in createManualUser:', err);
     return { success: false, error: 'An unexpected error occurred' };
   }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 import { useLocale } from "@/context/LocaleContext";
 
@@ -34,9 +35,14 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-5">
-              <div className="w-9 h-9 rounded-xl gradient-accent flex items-center justify-center p-1">
-                <img src="/images/logo.png" alt="Cartalik Logo" className="w-full h-full object-contain filter brightness-0 invert" />
-              </div>
+              <div className="relative w-12 h-12 rounded-2xl gradient-accent flex items-center justify-center shadow-xl shadow-accent/20 group-hover:scale-110 transition-transform duration-500 group-hover:rotate-12 mb-6">
+              <Image 
+                src="/images/logo.png" 
+                alt="Cartalik Logo" 
+                fill 
+                className="object-contain filter brightness-0 invert p-2" 
+              />
+            </div>
               <span className="text-xl font-bold tracking-tight">Cartalik</span>
             </Link>
             <p className="text-sm text-white/60 leading-relaxed max-w-xs">
